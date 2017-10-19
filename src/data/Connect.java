@@ -38,7 +38,7 @@ public class Connect {
       database =(String) jsonObject.get("DbName");
   }
   
-  protected void connect()throws IOException, FileNotFoundException, ParseException{
+  protected Connection getConnection()throws IOException, FileNotFoundException, ParseException{
     Connection connection = null;
 
     try {
@@ -48,8 +48,8 @@ public class Connect {
             .getConnection("jdbc:mysql://"+host+"/"+database,username, password);
 
 	} catch (SQLException | FileNotFoundException | ParseException e) {
-            System.out.println("Connection Failed! Check output console");
-            return;
+            System.out.println("Connection Failed! Check output console " + e.toString());
+            
 	}
 
 	if (connection != null) {
@@ -57,6 +57,7 @@ public class Connect {
 	} else {
 		System.out.println("Failed to make connection!");
 	}
+        return connection;
   }
 
   
