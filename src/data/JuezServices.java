@@ -7,8 +7,8 @@ package data;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,16 +19,18 @@ import org.json.simple.parser.ParseException;
  * @author mean
  */
 public class JuezServices extends Connect{
-    private PreparedStatement ps;
+    private CallableStatement cs;
     private ResultSet rs;
     
-    public ArrayList<String[]> getJueces() throws IOException, FileNotFoundException, ParseException, SQLException{
+    public  ArrayList<String[]> getJueces() throws IOException, FileNotFoundException, ParseException, SQLException{
         Connection con = getConnection();
         ArrayList<String[]> jueces = new ArrayList<>();
         
-        ps = con.prepareStatement("exec getJueces");
-        ps.setEscapeProcessing(true);
-        rs = ps.executeQuery();
+        cs = con.prepareCall("Call get_querellante(?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1, 1);
+        rs = cs.executeQuery();
+        
         int columnCount = rs.getMetaData().getColumnCount();
         while(rs.next())
         {
@@ -45,4 +47,6 @@ public class JuezServices extends Connect{
         return jueces;
         
     }
+
+    
 }
