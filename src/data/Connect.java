@@ -16,49 +16,59 @@ import java.sql.SQLException;
 
 import java.io.FileReader;
 import java.io.IOException;
- 
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class Connect {
-    
-  private static String host;
-  private static String username;
-  private static String password;
-  private static String database;
-  
-  private   void jsonParse() throws FileNotFoundException, IOException, ParseException{
-      JSONParser parser = new JSONParser();
-      Object obj = parser.parse(new FileReader("src/data/connectionSettings.json")); //the location of the file
-      JSONObject jsonObject = (JSONObject) obj;
-      host = (String) jsonObject.get("Hostname");
-      username = (String) jsonObject.get("Username");
-      password = (String) jsonObject.get("Password");
-      database =(String) jsonObject.get("DbName");
-  }
-  
-  protected Connection getConnection()throws IOException, FileNotFoundException, ParseException{
-    Connection connection = null;
 
-    try {
-        jsonParse();
-        System.out.println(host);
-	connection = DriverManager
-            .getConnection("jdbc:mysql://"+host+"/"+database,username, password);
+    private static String host;
+    private static String username;
+    private static String password;
+    private static String database;
+    protected Connection con = null;
 
-	} catch (SQLException | FileNotFoundException | ParseException e) {
+    private void jsonParse() throws  IOException {
+        try {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader("src/data/connectionSettings.json")); //the location of the file
+            JSONObject jsonObject = (JSONObject) obj;
+            host = (String) jsonObject.get("Hostname");
+            username = (String) jsonObject.get("Username");
+            password = (String) jsonObject.get("Password");
+            database = (String) jsonObject.get("DbName");
+        }catch(FileNotFoundException | ParseException   e){
+        
+        }
+
+    }
+
+    protected Connection getConnection() throws IOException{
+
+        try {
+            jsonParse();
+            System.out.println(host);
+            con = DriverManager
+                    .getConnection("jdbc:mysql://" + host + "/" + database, username, password);
+
+        } catch (SQLException | FileNotFoundException e) {
             System.out.println("Connection Failed! Check output console " + e.toString());
-            
-	}
 
-	if (connection != null) {
-		System.out.println("You made it, take control your database now!");
-	} else {
-		System.out.println("Failed to make connection!");
-	}
-        return connection;
-  }
+        }
 
-  
+        return con;
+    }
+
+    protected void finalize() {
+        try {
+            con.close();
+        } catch (Exception e) {
+            /*este mï¿½todo es llamado por el
+			 *garbage collector, por lo tanto
+			 *se atrapa la excepciï¿½n pero no se
+			 *reporta*/
+        }
+    }
+
 }
