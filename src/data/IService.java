@@ -10,5 +10,8 @@ package data;
  * @author mean
  */
 public interface IService {
-    
+    Object[] get();
+    void insert();
+    void delete(int id);
+    void update();
 }

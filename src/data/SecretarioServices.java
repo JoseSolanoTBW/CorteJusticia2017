@@ -5,30 +5,27 @@
  */
 package data;
 
-import Classes.Persona.Juez;
-import java.io.FileNotFoundException;
+import Classes.Persona.Secretario;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import org.json.simple.parser.ParseException;
 
 /**
  *
  * @author mean
  */
-import data.Service;
-
-public class JuezServices  extends Service{
+public class SecretarioServices extends Service{
+    
     private CallableStatement cs;
     private ResultSet rs;
     private Connection con;
-    
-    public  ArrayList<String[]> getJueces() throws IOException, FileNotFoundException, ParseException, SQLException{
-        con = getConnection();
-        ArrayList<String[]> jueces = new ArrayList<>();
+    public ArrayList<Secretario> get() throws IOException, SQLException{
+    con = getConnection();
+        ArrayList<Secretario> secretarioList = new ArrayList<>();
+        Secretario secre;
         
         cs = con.prepareCall("Call get_querellante(?)");
         cs.setEscapeProcessing(true);
@@ -38,24 +35,12 @@ public class JuezServices  extends Service{
         int columnCount = rs.getMetaData().getColumnCount();
         while(rs.next())
         {
-            String[] row = new String[columnCount];
-            for (int i=0; i <columnCount ; i++)
-            {
-                row[i] = rs.getString(i + 1);
-            }
-            jueces.add(row);
+            //secre = new Secretario(rs.getInt("idPersona"), rs.getString("nombre"), Apellido, columnCount, Direccion, NombreUsuario, Password)
+           
         }
         
         con.close();
         
-        return jueces;
-        
+        //return jueces;
     }
-    
-    public Juez GetJuezObject()
-    {
-        return new Juez();
-    }
-
-    
 }
