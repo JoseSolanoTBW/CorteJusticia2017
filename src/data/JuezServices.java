@@ -5,7 +5,7 @@
  */
 package data;
 
-import Classes.Persona.Juez;
+import Business.Persona.Juez;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.CallableStatement;
