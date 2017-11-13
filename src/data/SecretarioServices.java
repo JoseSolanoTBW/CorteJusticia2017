@@ -80,15 +80,29 @@ public  class SecretarioServices extends Service{
         cs.setInt(4, secre.getTelefono());
         cs.setString(5, secre.getDireccion());
         cs.setInt(6, secre.getIdPersona());
-        cs.executeQuery();
+        cs.execute();
         
         cs = con.prepareCall("Call update_user(?,?)");
         cs.setEscapeProcessing(true);
         cs.setInt(1, secre.getLoginUsuario().getIdUsuario());
         cs.setString(2, secre.getLoginUsuario().getNombreUsuario());
-        cs.executeQuery();
+        cs.execute();
+        con.close();
+        
         
         
     }
+    
+    public void delete(int idPersona) throws SQLException, IOException{
+        con = getConnection();
+        
+        cs = con.prepareCall("Call delete_persona(?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1, idPersona);
+        cs.execute();
+        
+    }
+    
+    
     
 }
