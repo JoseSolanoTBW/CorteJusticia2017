@@ -49,8 +49,7 @@ public class Service {
         try {
             jsonParse();
             System.out.println(host);
-            con = DriverManager
-                    .getConnection("jdbc:mysql://" + host + "/" + database, username, password);
+            con = DriverManager.getConnection("jdbc:mysql://" + host + "/" + database, username, password);
 
         } catch (SQLException | FileNotFoundException e) {
             System.out.println("Connection Failed! Check output console " + e.toString());

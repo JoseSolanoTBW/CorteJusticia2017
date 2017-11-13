@@ -61,9 +61,7 @@ public  class SecretarioServices extends Service{
             secre = new Secretario(rs.getInt("idPersona"),rs.getInt("cedula"), rs.getString("nombre"), 
                     rs.getString("apellido"), rs.getInt("telefono"), 
                     rs.getString("direccion"), rs.getString("nombreUsuario"), 
-                    rs.getInt("idUsuario"));
-
-        
+                    rs.getInt("idUsuario"));        
         con.close();
         
         return secre;
@@ -87,10 +85,7 @@ public  class SecretarioServices extends Service{
         cs.setInt(1, secre.getLoginUsuario().getIdUsuario());
         cs.setString(2, secre.getLoginUsuario().getNombreUsuario());
         cs.execute();
-        con.close();
-        
-        
-        
+        con.close();                  
     }
     
     public void delete(int idPersona) throws SQLException, IOException{
@@ -99,10 +94,6 @@ public  class SecretarioServices extends Service{
         cs = con.prepareCall("Call delete_persona(?)");
         cs.setEscapeProcessing(true);
         cs.setInt(1, idPersona);
-        cs.execute();
-        
-    }
-    
-    
-    
+        cs.execute();        
+    }    
 }

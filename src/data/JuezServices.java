@@ -26,36 +26,89 @@ public class JuezServices  extends Service{
     private ResultSet rs;
     private Connection con;
     
-    public  ArrayList<String[]> getJueces() throws IOException, FileNotFoundException, ParseException, SQLException{
-        con = getConnection();
-        ArrayList<String[]> jueces = new ArrayList<>();
+    public ArrayList<Juez> getSecretarios() throws IOException, SQLException{
+    con = getConnection();
+        ArrayList<Juez> secretarioList = new ArrayList<>();
+        Juez juez;
         
-        cs = con.prepareCall("Call get_querellante(?)");
+        cs = con.prepareCall("Call get_all_judges");
         cs.setEscapeProcessing(true);
-        cs.setInt(1, 1);
+        
         rs = cs.executeQuery();
         
         int columnCount = rs.getMetaData().getColumnCount();
         while(rs.next())
         {
-            String[] row = new String[columnCount];
-            for (int i=0; i <columnCount ; i++)
-            {
-                row[i] = rs.getString(i + 1);
-            }
-            jueces.add(row);
+           juez = new Juez(rs.getInt("idPersona"),rs.getInt("cedula"), rs.getString("nombre"), 
+                           rs.getString("apellido"), rs.getInt("telefono"), rs.getString("direccion"), 
+                           rs.getInt("numeroJuez"),rs.getInt("numeroSala"),rs.getString("nombresala"), 
+                           rs.getString("nombreUsuario"), rs.getInt("idUsuario"));
+            secretarioList.add(juez);
+           
         }
         
         con.close();
         
-        return jueces;
-        
+        return secretarioList;
     }
     
-    public Juez GetJuezObject()
-    {
-        return new Juez();
+    public Juez get() throws SQLException, IOException{
+    con = getConnection();
+
+        Juez juez;
+        
+        cs = con.prepareCall("Call get_secretaries");
+        cs.setEscapeProcessing(true);
+        
+        rs = cs.executeQuery();
+
+           juez = new Juez(rs.getInt("idPersona"),rs.getInt("cedula"), rs.getString("nombre"), 
+                           rs.getString("apellido"), rs.getInt("telefono"), rs.getString("direccion"), 
+                           rs.getInt("numeroJuez"),rs.getInt("numeroSala"),rs.getString("nombresala"), 
+                           rs.getString("nombreUsuario"), rs.getInt("idUsuario"));     
+        con.close();
+        
+        return juez;
     }
+    
+    public void update(Juez juez) throws SQLException, IOException {
+        con = getConnection();
+        
+        cs = con.prepareCall("Call update_persona(?,?,?,?,?,?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1,juez.getCedula());
+        cs.setString(2,juez.getNombre());
+        cs.setString(3,juez.getApellido());
+        cs.setInt(4, juez.getTelefono());
+        cs.setString(5, juez.getDireccion());
+        cs.setInt(6, juez.getIdPersona());
+        cs.execute();
+        
+        cs = con.prepareCall("Call update_user(?,?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1, juez.getLoginUsuario().getIdUsuario());
+        cs.setString(2, juez.getLoginUsuario().getNombreUsuario());
+        cs.execute();
+        
+        cs = con.prepareCall("Call update_juez(?,?,?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1,juez.getNumeroJuez());
+        cs.setInt(2,juez.getSalaJustica().getNumeroSala());
+        cs.setInt(3,juez.getLoginUsuario().getIdUsuario());
+        cs.execute();
+        
+        con.close();                  
+    }
+    
+    public void delete(int idPersona) throws SQLException, IOException{
+        con = getConnection();
+        
+        cs = con.prepareCall("Call delete_persona(?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1, idPersona);
+        cs.execute();        
+    }
+    
 
     
 }

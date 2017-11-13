@@ -16,8 +16,9 @@ import java.sql.SQLException;
 public class mainTest {
     static SecretarioServices sSecre = new SecretarioServices();
     public static void main(String args[]) throws SQLException, IOException{
-        Secretario sec = new Secretario(2, 302450025, "Adrian", "Obando", 84793258,"Alajuelita", "AdrianLeiton", 2);
-        sSecre.update(sec);
-        
+        //Secretario sec = new Secretario(2, 302450025, "Adrian", "Leiton", 84793258,"Alajuelita", "AdrianLeiton", 2);
+        //sSecre.update(sec);      
+        JuezServices j =new JuezServices();
+        j.delete(1);
     }
 }
