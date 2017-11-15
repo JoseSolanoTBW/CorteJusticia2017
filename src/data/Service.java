@@ -9,6 +9,8 @@ package data;
  *
  * @author Christian Adrian Obando Leiton
  */
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -16,6 +18,11 @@ import java.sql.SQLException;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import static java.lang.System.in;
+import java.nio.charset.Charset;
+import org.apache.commons.io.IOUtils;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,13 +39,19 @@ public class Service {
     private void jsonParse() throws  IOException {
         try {
             JSONParser parser = new JSONParser();
-            Object obj = parser.parse(new FileReader("src/data/connectionSettings.json")); //the location of the file
+            InputStream configStream = this.getClass().getResourceAsStream("ConnectionSettings.json");
+            
+          
+            String file = IOUtils.toString(configStream, Charset.defaultCharset());
+            
+            
+            Object obj = parser.parse(file); //the location of the file
             JSONObject jsonObject = (JSONObject) obj;
             host = (String) jsonObject.get("Hostname");
             username = (String) jsonObject.get("Username");
             password = (String) jsonObject.get("Password");
             database = (String) jsonObject.get("DbName");
-        }catch(FileNotFoundException | ParseException   e){
+        }catch(ParseException   e){
         
         }
 
@@ -68,6 +81,14 @@ public class Service {
 			 *se atrapa la excepciï¿½n pero no se
 			 *reporta*/
         }
+    }
+
+    private void PrintInputStream(InputStream resourceAsStream) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void InputStream(InputStream resourceAsStream) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
