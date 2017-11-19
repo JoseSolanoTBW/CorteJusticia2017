@@ -48,20 +48,22 @@ public  class SecretarioServices extends Service{
         return secretarioList;
     }
     
-    public Secretario get() throws SQLException, IOException{
+    public Secretario get(int id) throws SQLException, IOException{
     con = getConnection();
 
-        Secretario secre;
+        Secretario secre = null;
         
-        cs = con.prepareCall("Call get_secretaries");
+        cs = con.prepareCall("Call get_secretario(?)");
         cs.setEscapeProcessing(true);
+        cs.setInt(1, id);
         
         rs = cs.executeQuery();
-
+        while(rs.next()){
             secre = new Secretario(rs.getInt("idPersona"),rs.getInt("cedula"), rs.getString("nombre"), 
                     rs.getString("apellido"), rs.getInt("telefono"), 
                     rs.getString("direccion"), rs.getString("nombreUsuario"), 
-                    rs.getInt("idUsuario"));        
+                    rs.getInt("idUsuario"));      
+        }  
         con.close();
         
         return secre;
