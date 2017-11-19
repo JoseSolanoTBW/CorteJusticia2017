@@ -5,6 +5,7 @@
  */
 package data;
 
+import Business.Corte.Sala;
 import Business.Persona.Juez;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -109,6 +110,21 @@ public class JuezServices  extends Service{
         cs.execute();        
     }
     
+    public Sala getSalaByUserName(String userName) throws SQLException, IOException
+    {
+        con = getConnection();
 
-    
+        Sala salaJuez;
+        
+        cs = con.prepareCall("Call get_sala_by_userName(?)");
+        cs.setEscapeProcessing(true);
+        cs.setString(1, userName);
+        rs = cs.executeQuery();
+        rs.next();
+           salaJuez = new Sala(rs.getInt("idSala"), rs.getString("nombre"));     
+        con.close();
+        
+        return salaJuez;
+        
+    }    
 }

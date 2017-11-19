@@ -1,5 +1,6 @@
 package data;
 
+import Business.Persona.Persona;
 import Business.Persona.Usuario;
 import java.io.IOException;
 import java.sql.CallableStatement;
@@ -40,4 +41,24 @@ public class UsuariosService extends Service{
         return usuarioList;
     }
     
+    public Persona getPersonaById (int userId) throws IOException, SQLException  {
+      
+        con = getConnection();
+        Persona pers;
+        
+        cs = con.prepareCall("Call get_persona_byidPersona(?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1,userId);
+        rs = cs.executeQuery();
+        
+        int columnCount = rs.getMetaData().getColumnCount();
+        rs.next();
+               pers = new Persona(rs.getInt("idPersona"),rs.getInt("cedula"), 
+                          rs.getString("personaNombre"), rs.getString("apellido"),
+                          rs.getInt("telefono"), rs.getString("direccion"),
+                          rs.getString("nombre"));            
+        
+        con.close();        
+        return pers;
+    }    
 }
