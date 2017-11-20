@@ -1,2 +1,9 @@
 /dist/
 *.class
+nbproject/project.properties
+nbproject/project.properties
+nbproject/private/private.xml
+nbproject/private/private.properties
+dist/conexion.jar
+build/classes/data/SecretarioServices.class
+build/built-jar.properties
