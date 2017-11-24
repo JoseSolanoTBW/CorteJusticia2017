@@ -103,17 +103,23 @@ public  class SecretarioServices extends Service{
         con.close();
     }
 
-//    public void create(Secretario secre){
-//        con = getConnection();
-//        cs = con.prepareCall("Call delete_user(?)");
-//        cs.setEscapeProcessing(true);
-//        cs.setInt(1, idPersona);
-//        cs.execute();  
-//        cs = con.prepareCall("Call delete_persona(?)");
-//        cs.setEscapeProcessing(true);
-//        cs.setInt(1, idPersona);
-//        cs.execute();    
-//        con.close();
-//    
-//    }
+    public void create(Secretario secre) throws IOException, SQLException{
+        con = getConnection();
+        cs = con.prepareCall("Call create_persona(?,?,?,?,?,?)");
+        cs.setEscapeProcessing(true);
+        cs.setString(1, secre.getNombre());
+        cs.setString(2, secre.getApellido());
+        cs.setInt(3, secre.getCedula());
+        cs.setInt(4, secre.getTelefono());
+        cs.setString(5, secre.getDireccion());
+        cs.setInt(6, 2);
+        cs.execute();  
+        cs = con.prepareCall("Call create_user(?,?)");
+        cs.setEscapeProcessing(true);
+        cs.setString(1, secre.getLoginUsuario().getNombreUsuario());
+        cs.setString(2,"123");
+        cs.execute();    
+        con.close();
+    
+    }
 }
