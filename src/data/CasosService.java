@@ -25,11 +25,33 @@ public class CasosService extends Service{
         cs.setInt(1, id);
         rs = cs.executeQuery();
         
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
         int columnCount = rs.getMetaData().getColumnCount();
         while (rs.next()) {
             casos = new Caso(rs.getInt("numeroCaso"), rs.getString("descripcion"),
                     rs.getDate("fechaCreacion"), rs.getInt("idEstado"),rs.getString("Estado"));
+            querellanteList.add(casos);
+        }
+
+        con.close();
+
+        return querellanteList;
+    }
+    
+     public ArrayList<Caso> getCasosPorJuez(int id) throws IOException, SQLException {
+        con = getConnection();
+        ArrayList<Caso> querellanteList = new ArrayList<>();
+        Caso casos;
+
+        cs = con.prepareCall("Call get_cases_by_juedge(?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1, id);
+        rs = cs.executeQuery();
+        
+        int columnCount = rs.getMetaData().getColumnCount();
+        while (rs.next()) {
+            casos = new Caso(rs.getInt("numeroCaso"), rs.getString("descripcion"),
+                    rs.getDate("fechaCreacion"), rs.getInt("idEstado"),rs.getString("Estado"),rs.getInt("Persona_idPersona"),
+                    rs.getString("QuerellateNombre"), rs.getString("apellido"));
             querellanteList.add(casos);
         }
 
