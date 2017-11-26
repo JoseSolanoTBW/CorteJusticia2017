@@ -21,6 +21,7 @@ import org.json.simple.parser.ParseException;
  * @author mean
  */
 import data.Service;
+import java.util.Random;
 
 public class JuezServices  extends Service{
     private CallableStatement cs;
@@ -127,4 +128,20 @@ public class JuezServices  extends Service{
         return salaJuez;
         
     }    
+     public int getRandomJuez() throws IOException, SQLException{
+        ArrayList<Integer> listId = new ArrayList<>();
+        Random random = new Random();
+    con = getConnection();
+        cs = con.prepareCall("Call get_idJuez");
+        rs = cs.executeQuery();
+         while(rs.next())
+        {
+            listId.add(rs.getInt("idJuez"));
+           
+        }
+    
+        
+        return listId.get(random.nextInt(listId.size()));
+    }
+
 }

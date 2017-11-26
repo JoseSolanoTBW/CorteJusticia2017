@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -122,4 +123,5 @@ public  class SecretarioServices extends Service{
         con.close();
     
     }
+    
 }
