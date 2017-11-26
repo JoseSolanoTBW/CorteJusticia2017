@@ -104,5 +104,20 @@ public class QuerellanteServices extends Service {
         con.close();
 
     }
+    
+    public int getIdQuerellante (int cedula) throws SQLException, IOException{
+     con = getConnection();
+     int id = 0;
+        cs = con.prepareCall("Call get_querellanteByCedula(?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1, cedula);
+        rs = cs.executeQuery();
+        if(rs.next()){
+            id = rs.getInt("idPersona");
+        }
+         
+        con.close();
+        return id;
+    }
 
 }
