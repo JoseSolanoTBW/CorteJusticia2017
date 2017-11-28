@@ -36,36 +36,36 @@ public class Service {
     private static String database;
     protected Connection con = null;
 
-    private void jsonParse() throws  IOException {
+    private void jsonParse() throws IOException {
         try {
             JSONParser parser = new JSONParser();
             InputStream configStream = this.getClass().getResourceAsStream("ConnectionSettings.json");
-            
-          
+
             String file = IOUtils.toString(configStream, Charset.defaultCharset());
-            
-            
+
             Object obj = parser.parse(file); //the location of the file
             JSONObject jsonObject = (JSONObject) obj;
             host = (String) jsonObject.get("Hostname");
             username = (String) jsonObject.get("Username");
             password = (String) jsonObject.get("Password");
             database = (String) jsonObject.get("DbName");
-        }catch(ParseException   e){
-        
+        } catch (ParseException e) {
+
         }
 
     }
 
-    protected Connection getConnection() throws IOException{
+    protected Connection getConnection() throws IOException {
+        if (con == null) {
+            try {
+                jsonParse();
+                
+                con = DriverManager.getConnection("jdbc:mysql://" + host + "/" + database, username, password);
 
-        try {
-            jsonParse();
-            System.out.println(host);
-            con = DriverManager.getConnection("jdbc:mysql://" + host + "/" + database, username, password);
+            } catch (SQLException | FileNotFoundException e) {
+                System.out.println("Connection Failed! Check output console " + e.toString());
 
-        } catch (SQLException | FileNotFoundException e) {
-            System.out.println("Connection Failed! Check output console " + e.toString());
+            }
 
         }
 

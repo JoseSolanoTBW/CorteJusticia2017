@@ -17,14 +17,14 @@ import java.util.ArrayList;
 public class CasosService extends Service{
     private CallableStatement cs;
     private ResultSet rs;
-    private Connection con;
+    
 
     public ArrayList<Caso> getCasosPorQuerellante(int id) throws IOException, SQLException {
-        con = getConnection();
+        
         ArrayList<Caso> querellanteList = new ArrayList<>();
         Caso casos;
 
-        cs = con.prepareCall("Call get_cases_by_querellante(?)");
+        cs = getConnection().prepareCall("Call get_cases_by_querellante(?)");
         cs.setEscapeProcessing(true);
         cs.setInt(1, id);
         rs = cs.executeQuery();
@@ -36,7 +36,7 @@ public class CasosService extends Service{
             querellanteList.add(casos);
         }
 
-        con.close();
+        
 
         return querellanteList;
     }

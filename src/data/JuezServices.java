@@ -7,6 +7,7 @@ package data;
 
 import Business.Corte.Sala;
 import Business.Persona.Juez;
+import Business.Persona.Usuario;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.CallableStatement;
@@ -28,12 +29,12 @@ public class JuezServices  extends Service{
     private ResultSet rs;
     private Connection con;
     
-    public ArrayList<Juez> getSecretarios() throws IOException, SQLException{
+    public ArrayList<Juez> getJueces() throws IOException, SQLException{
     con = getConnection();
-        ArrayList<Juez> secretarioList = new ArrayList<>();
+        ArrayList<Juez> juezList = new ArrayList<>();
         Juez juez;
         
-        cs = con.prepareCall("Call get_all_judges");
+        cs = con.prepareCall("Call get_jueces");
         cs.setEscapeProcessing(true);
         
         rs = cs.executeQuery();
@@ -41,36 +42,64 @@ public class JuezServices  extends Service{
         int columnCount = rs.getMetaData().getColumnCount();
         while(rs.next())
         {
-           juez = new Juez(rs.getInt("idPersona"),rs.getInt("cedula"), rs.getString("nombre"), 
-                           rs.getString("apellido"), rs.getInt("telefono"), rs.getString("direccion"), 
-                           rs.getInt("numeroJuez"),rs.getInt("numeroSala"),rs.getString("nombresala"), 
-                           rs.getString("nombreUsuario"), rs.getInt("idUsuario"));
-            secretarioList.add(juez);
+           Juez jue = new Juez();
+           Sala sal = new Sala();
+           Usuario usu = new Usuario();
+           sal.setNombreSala(rs.getString("sala"));
+           usu.setIdUsuario(rs.getInt("idUsuario"));
+           usu.setNombreUsuario(rs.getString("nombreUsuario"));
+           jue.setIdPersona(rs.getInt("idPersona"));
+           jue.setCedula(rs.getInt("cedula"));
+           jue.setNombre(rs.getString("nombre"));
+           jue.setNumeroJuez(rs.getInt("numeroJuez"));
+           jue.setSalaJustica(sal);
+           jue.setLoginUsuario(usu);
+           
+           juezList.add(jue);
+           
+           
            
         }
         
         con.close();
         
-        return secretarioList;
+        return juezList;
     }
     
     public Juez get() throws SQLException, IOException{
-    con = getConnection();
-
-        Juez juez;
+     con = getConnection();
+       Juez jue= null;
         
-        cs = con.prepareCall("Call get_secretaries");
+        cs = con.prepareCall("Call get_jueces");
         cs.setEscapeProcessing(true);
         
         rs = cs.executeQuery();
-
-           juez = new Juez(rs.getInt("idPersona"),rs.getInt("cedula"), rs.getString("nombre"), 
-                           rs.getString("apellido"), rs.getInt("telefono"), rs.getString("direccion"), 
-                           rs.getInt("numeroJuez"),rs.getInt("numeroSala"),rs.getString("nombresala"), 
-                           rs.getString("nombreUsuario"), rs.getInt("idUsuario"));     
+        
+        int columnCount = rs.getMetaData().getColumnCount();
+        while(rs.next())
+        {
+           jue = new Juez();
+           Sala sal = new Sala();
+           Usuario usu = new Usuario();
+           sal.setNombreSala(rs.getString("sala"));
+           usu.setIdUsuario(rs.getInt("idUsuario"));
+           usu.setNombreUsuario(rs.getString("nombreUsuario"));
+           jue.setIdPersona(rs.getInt("idPersona"));
+           jue.setCedula(rs.getInt("cedula"));
+           jue.setNombre(rs.getString("nombre"));
+           jue.setNumeroJuez(rs.getInt("numeroJuez"));
+           jue.setSalaJustica(sal);
+           jue.setLoginUsuario(usu);
+           
+        
+           
+           
+           
+        }
+        
         con.close();
         
-        return juez;
+        return jue;
     }
     
     public void update(Juez juez) throws SQLException, IOException {
