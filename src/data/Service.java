@@ -55,8 +55,8 @@ public class Service {
 
     }
 
-    protected Connection getConnection() throws IOException {
-        if (con == null) {
+    protected Connection getConnection() throws IOException, SQLException {
+        if (con == null || con.isClosed()) {
             try {
                 jsonParse();
                 

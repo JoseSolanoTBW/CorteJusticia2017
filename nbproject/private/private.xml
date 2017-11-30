@@ -4,6 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/mean/Documents/NetBeansProjects/CorteJusticia2017/src/data/JuezServices.java</file>
+            <file>file:/C:/Users/mean/Documents/NetBeansProjects/CorteJusticia2017/src/data/Service.java</file>
+            <file>file:/C:/Users/mean/Documents/NetBeansProjects/CorteJusticia2017/src/data/SalaService.java</file>
+            <file>file:/C:/Users/mean/Documents/NetBeansProjects/CorteJusticia2017/src/data/QuerellanteServices.java</file>
+            <file>file:/C:/Users/mean/Documents/NetBeansProjects/CorteJusticia2017/src/data/SecretarioServices.java</file>
+            <file>file:/C:/Users/mean/Documents/NetBeansProjects/CorteJusticia2017/src/data/QuerellanteService.java</file>
         </group>
     </open-files>
 </project-private>

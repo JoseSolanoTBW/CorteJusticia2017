@@ -66,12 +66,13 @@ public class JuezServices  extends Service{
         return juezList;
     }
     
-    public Juez get() throws SQLException, IOException{
-     con = getConnection();
+    public Juez get(int id) throws SQLException, IOException{
+  
        Juez jue= null;
         
-        cs = con.prepareCall("Call get_jueces");
+        cs = getConnection().prepareCall("Call get_juez(?)");
         cs.setEscapeProcessing(true);
+        cs.setInt(1, id);
         
         rs = cs.executeQuery();
         
@@ -81,25 +82,52 @@ public class JuezServices  extends Service{
            jue = new Juez();
            Sala sal = new Sala();
            Usuario usu = new Usuario();
+           sal.setNumeroSala(rs.getInt("idSala"));
            sal.setNombreSala(rs.getString("sala"));
-           usu.setIdUsuario(rs.getInt("idUsuario"));
            usu.setNombreUsuario(rs.getString("nombreUsuario"));
            jue.setIdPersona(rs.getInt("idPersona"));
            jue.setCedula(rs.getInt("cedula"));
            jue.setNombre(rs.getString("nombre"));
+           jue.setApellido(rs.getString("apellido"));
+           jue.setTelefono(rs.getInt("telefono"));
+           jue.setDireccion(rs.getString("direccion"));
            jue.setNumeroJuez(rs.getInt("numeroJuez"));
            jue.setSalaJustica(sal);
            jue.setLoginUsuario(usu);
-           
-        
-           
-           
+
            
         }
         
-        con.close();
+      
         
         return jue;
+    }
+    public void create(Juez juz) throws IOException, SQLException{
+    
+        cs = getConnection().prepareCall("Call create_persona(?,?,?,?,?,?)");
+        cs.setEscapeProcessing(true);
+        cs.setString(1, juz.getNombre());
+        cs.setString(2, juz.getApellido());
+        cs.setInt(3, juz.getCedula());
+        cs.setInt(4, juz.getTelefono());
+        cs.setString(5, juz.getDireccion());
+        cs.setInt(6, 1);
+        cs.execute();  
+        
+        cs = getConnection().prepareCall("Call create_user(?,?)");
+        cs.setEscapeProcessing(true);
+        cs.setString(1, juz.getLoginUsuario().getNombreUsuario());
+        cs.setString(2,"123");
+        cs.execute();
+        
+        cs = getConnection().prepareCall("Call create_juez(?,?)");
+        cs.setEscapeProcessing(true);
+        cs.setString(2,juz.getSalaJustica().getNombreSala());
+        cs.setInt(1, juz.getNumeroJuez());
+        
+        cs.execute();    
+        
+    
     }
     
     public void update(Juez juez) throws SQLException, IOException {
@@ -117,27 +145,35 @@ public class JuezServices  extends Service{
         
         cs = con.prepareCall("Call update_user(?,?)");
         cs.setEscapeProcessing(true);
-        cs.setInt(1, juez.getLoginUsuario().getIdUsuario());
+        cs.setInt(1, juez.getIdPersona());
         cs.setString(2, juez.getLoginUsuario().getNombreUsuario());
         cs.execute();
         
-        cs = con.prepareCall("Call update_juez(?,?,?)");
+        cs = con.prepareCall("Call update_juez(?,?)");
         cs.setEscapeProcessing(true);
-        cs.setInt(1,juez.getNumeroJuez());
-        cs.setInt(2,juez.getSalaJustica().getNumeroSala());
-        cs.setInt(3,juez.getLoginUsuario().getIdUsuario());
+      
+        cs.setString(1,juez.getSalaJustica().getNombreSala());
+        cs.setInt(2, juez.getNumeroJuez());
+       
         cs.execute();
-        
-        con.close();                  
+                         
     }
     
     public void delete(int idPersona) throws SQLException, IOException{
-        con = getConnection();
-        
-        cs = con.prepareCall("Call delete_persona(?)");
+      
+       cs = getConnection().prepareCall("Call delete_juez(?)");
         cs.setEscapeProcessing(true);
         cs.setInt(1, idPersona);
-        cs.execute();        
+        cs.execute();
+        cs = getConnection().prepareCall("Call delete_user(?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1, idPersona);
+        cs.execute();  
+        cs = getConnection().prepareCall("Call delete_persona(?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1, idPersona);
+        cs.execute();    
+              
     }
     
     public Sala getSalaByUserName(String userName) throws SQLException, IOException
