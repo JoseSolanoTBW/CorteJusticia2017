@@ -1,9 +1,10 @@
-package data;
+package Services;
 
 import Business.Caso.Caso;
 import Business.Caso.DetalleHistorial;
 import Business.Caso.Estado;
 import Business.Persona.Querellante;
+import data.Service;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;

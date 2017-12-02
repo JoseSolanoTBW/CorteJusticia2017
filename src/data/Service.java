@@ -9,20 +9,17 @@ package data;
  *
  * @author Christian Adrian Obando Leiton
  */
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import static java.lang.System.in;
-import java.nio.charset.Charset;
-import org.apache.commons.io.IOUtils;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.apache.commons.io.FileUtils;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -38,17 +35,26 @@ public class Service {
 
     private void jsonParse() throws IOException {
         try {
-            JSONParser parser = new JSONParser();
-            InputStream configStream = this.getClass().getResourceAsStream("ConnectionSettings.json");
-
-            String file = IOUtils.toString(configStream, Charset.defaultCharset());
-
-            Object obj = parser.parse(file); //the location of the file
-            JSONObject jsonObject = (JSONObject) obj;
-            host = (String) jsonObject.get("Hostname");
-            username = (String) jsonObject.get("Username");
-            password = (String) jsonObject.get("Password");
-            database = (String) jsonObject.get("DbName");
+            String currentDirectory = System.getProperty("user.dir");
+            Path projectDirectory = Paths.get(currentDirectory, new String[] { "ConnectionSettings.json" });
+            
+            if(CheckFileExistence(projectDirectory.toString()))
+            {
+                JSONParser parser = new JSONParser();
+                File file = new File(projectDirectory.toString());
+                String readFile = FileUtils.readFileToString(file);
+                Object obj = parser.parse(readFile); //the location of the file
+                JSONObject jsonObject = (JSONObject) obj;
+                host = (String) jsonObject.get("Hostname");
+                username = (String) jsonObject.get("Username");
+                password = (String) jsonObject.get("Password");
+                database = (String) jsonObject.get("DbName");
+            }
+            else
+            {
+                throw new IOException();
+            }
+            
         } catch (ParseException e) {
 
         }
@@ -70,6 +76,16 @@ public class Service {
         }
 
         return con;
+    }
+    
+    public static boolean CheckFileExistence(String pPath) {
+        boolean res = false;
+
+        File file = new File(pPath);
+        if ((file.exists()) && (!file.isDirectory())) {
+            res = true;
+        }
+        return res;
     }
 
     protected void finalize() {
