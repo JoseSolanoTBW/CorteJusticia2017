@@ -118,6 +118,17 @@ public class CasosService extends Service{
         cs.execute();
         con.close();
      } 
+    
+     public void insertarResolucionCasoEstado(int idCaso, String text ) throws SQLException, IOException
+     {
+        con = getConnection();
+        cs = con.prepareCall("Call insertResolutionCaso(?,?)");
+        cs.setEscapeProcessing(true);
+        cs.setInt(1, idCaso);
+        cs.setString(2, text);
+        cs.execute();
+        con.close();
+     }
      
     public Caso getCasos(int id) throws IOException, SQLException {
         con = getConnection();
