@@ -193,7 +193,7 @@ public class CasosService extends Service{
         rs.next();
             casos = new Caso(rs.getInt("numeroCaso"), rs.getString("descripcion"),
                     rs.getDate("fechaCreacion"), rs.getInt("idEstado"),rs.getString("Estado"),rs.getInt("Persona_idPersona"),
-                    rs.getString("QuerellateNombre"), rs.getString("apellido"));
+                    rs.getString("QuerellateNombre"), rs.getString("apellido"), rs.getString("resolucion"));
         
         con.close();
 
