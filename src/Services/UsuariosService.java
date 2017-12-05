@@ -10,12 +10,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author mean
+ */
 public class UsuariosService extends Service{
     
     private CallableStatement cs;
     private ResultSet rs;
     private Connection con;
     
+    /**
+     *
+     * @return Retorna todos los usuarios
+     * @throws IOException
+     * @throws SQLException
+     */
     public ArrayList<Usuario> getUsuarios() throws IOException, SQLException{
     con = getConnection();
         ArrayList<Usuario> usuarioList = new ArrayList<>();
@@ -42,6 +52,13 @@ public class UsuariosService extends Service{
         return usuarioList;
     }
     
+    /**
+     *
+     * @param userId
+     * @return Retorna una persona en base al id del usuario
+     * @throws IOException
+     * @throws SQLException
+     */
     public Persona getPersonaById (int userId) throws IOException, SQLException  {
       
         con = getConnection();

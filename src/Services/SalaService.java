@@ -21,6 +21,13 @@ import java.util.ArrayList;
 public class SalaService extends Service{
     private ResultSet rs;
     private CallableStatement cs;
+
+    /**
+     *
+     * @return Retorna todas las salas
+     * @throws IOException
+     * @throws SQLException
+     */
     public ArrayList<Sala>getSalas() throws IOException, SQLException{
         ArrayList<Sala> listSala = new ArrayList<>();
         Sala sal= null;

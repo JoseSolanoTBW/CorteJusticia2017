@@ -24,6 +24,13 @@ public  class SecretarioServices extends Service{
     private CallableStatement cs;
     private ResultSet rs;
     private Connection con;
+
+    /**
+     *
+     * @return Retorna todos los secretarios
+     * @throws IOException
+     * @throws SQLException
+     */
     public ArrayList<Secretario> getSecretarios() throws IOException, SQLException{
     con = getConnection();
         ArrayList<Secretario> secretarioList = new ArrayList<>();
@@ -50,6 +57,13 @@ public  class SecretarioServices extends Service{
         return secretarioList;
     }
     
+    /**
+     *
+     * @param id
+     * @return retorna un secretario en especifico
+     * @throws SQLException
+     * @throws IOException
+     */
     public Secretario get(int id) throws SQLException, IOException{
     con = getConnection();
 
@@ -71,6 +85,12 @@ public  class SecretarioServices extends Service{
         return secre;
     }
     
+    /**
+     * Actualiza un secretario en la base de datos
+     * @param secre (Secretario)
+     * @throws SQLException
+     * @throws IOException
+     */
     public void update(Secretario secre) throws SQLException, IOException {
         con = getConnection();
         
@@ -92,6 +112,12 @@ public  class SecretarioServices extends Service{
         con.close();                  
     }
     
+    /**
+     * Borra un secretario
+     * @param idPersona
+     * @throws SQLException
+     * @throws IOException
+     */
     public void delete(int idPersona) throws SQLException, IOException{
         con = getConnection();
         cs = con.prepareCall("Call delete_user(?)");
@@ -105,6 +131,12 @@ public  class SecretarioServices extends Service{
         con.close();
     }
 
+    /**
+     * Crea un secretario 
+     * @param secre (Secretario)
+     * @throws IOException
+     * @throws SQLException
+     */
     public void create(Secretario secre) throws IOException, SQLException{
         con = getConnection();
         cs = con.prepareCall("Call create_persona(?,?,?,?,?,?)");

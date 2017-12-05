@@ -9,12 +9,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author mean
+ */
 public class QuerellanteService extends Service{
     
     private CallableStatement cs;
     private ResultSet rs;
     private Connection con;
     
+    /**
+     *
+     * @return
+     * @throws IOException
+     * @throws SQLException
+     */
     public ArrayList<Querellante> getSecretarios() throws IOException, SQLException{
     con = getConnection();
         ArrayList<Querellante> querellantesList = new ArrayList<>();

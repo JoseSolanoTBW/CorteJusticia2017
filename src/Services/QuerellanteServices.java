@@ -24,6 +24,12 @@ public class QuerellanteServices extends Service {
     private ResultSet rs;
     private Connection con;
 
+    /**
+     *
+     * @return Retorna todos los querellantes de la base de datos
+     * @throws IOException
+     * @throws SQLException
+     */
     public ArrayList<Querellante> getQuerrellantes() throws IOException, SQLException {
         con = getConnection();
         ArrayList<Querellante> querellanteList = new ArrayList<>();
@@ -48,6 +54,13 @@ public class QuerellanteServices extends Service {
         return querellanteList;
     }
 
+    /**
+     *
+     * @param id
+     * @return retorna un querellante en especifico
+     * @throws SQLException
+     * @throws IOException
+     */
     public Querellante get(int id) throws SQLException, IOException {
         con = getConnection();
         Querellante quere = null;
@@ -66,6 +79,12 @@ public class QuerellanteServices extends Service {
         return quere;
     }
 
+    /**
+     * Actualiza el querellante en la base de datos
+     * @param quere
+     * @throws SQLException
+     * @throws IOException
+     */
     public void update(Querellante quere) throws SQLException, IOException {
         con = getConnection();
 
@@ -80,6 +99,12 @@ public class QuerellanteServices extends Service {
         cs.execute();
     }
 
+    /**
+     * Borra un querellante en la base de datos
+     * @param idPersona
+     * @throws SQLException
+     * @throws IOException
+     */
     public void delete(int idPersona) throws SQLException, IOException {
         con = getConnection();
 
@@ -90,6 +115,12 @@ public class QuerellanteServices extends Service {
         con.close();
     }
 
+    /**
+     * Crea un querellante en la base de datos
+     * @param quere
+     * @throws IOException
+     * @throws SQLException
+     */
     public void create(Querellante quere) throws IOException, SQLException {
         con = getConnection();
         cs = con.prepareCall("Call create_persona(?,?,?,?,?,?)");
@@ -106,6 +137,13 @@ public class QuerellanteServices extends Service {
 
     }
     
+    /**
+     *
+     * @param cedula
+     * @return Retorna el id de un querellante
+     * @throws SQLException
+     * @throws IOException
+     */
     public int getIdQuerellante (int cedula) throws SQLException, IOException{
      con = getConnection();
      int id = 0;

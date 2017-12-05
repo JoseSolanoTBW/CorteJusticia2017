@@ -10,8 +10,26 @@ package data;
  * @author mean
  */
 public interface IService {
+
+    /**
+     *
+     * @return
+     */
     Object[] get();
+
+    /**
+     *
+     */
     void insert();
+
+    /**
+     *
+     * @param id
+     */
     void delete(int id);
+
+    /**
+     *
+     */
     void update();
 }

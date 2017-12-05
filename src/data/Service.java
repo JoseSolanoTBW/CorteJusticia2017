@@ -25,14 +25,25 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ *
+ * @author mean
+ */
 public class Service {
 
     private static String host;
     private static String username;
     private static String password;
     private static String database;
-    protected Connection con = null;
 
+    /**
+     * 
+     */
+    protected Connection con = null;
+    /**
+     * Parsea un json y obtiene los parametros para la base de datos
+     * @throws IOException 
+     */
     private void jsonParse() throws IOException {
         try {
             String currentDirectory = System.getProperty("user.dir");
@@ -61,6 +72,12 @@ public class Service {
 
     }
 
+    /**
+     *
+     * @return Retorna una conexion 
+     * @throws IOException
+     * @throws SQLException
+     */
     protected Connection getConnection() throws IOException, SQLException {
         if (con == null || con.isClosed()) {
             try {
@@ -78,6 +95,11 @@ public class Service {
         return con;
     }
     
+    /**
+     *
+     * @param pPath
+     * @return
+     */
     public static boolean CheckFileExistence(String pPath) {
         boolean res = false;
 

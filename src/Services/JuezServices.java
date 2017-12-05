@@ -25,11 +25,21 @@ import data.Service;
 import data.Service;
 import java.util.Random;
 
+/**
+ *
+ * @author mean
+ */
 public class JuezServices  extends Service{
     private CallableStatement cs;
     private ResultSet rs;
     private Connection con;
     
+    /**
+     *
+     * @return Retorna todos los jueces registrados en el sistema
+     * @throws IOException
+     * @throws SQLException
+     */
     public ArrayList<Juez> getJueces() throws IOException, SQLException{
     con = getConnection();
         ArrayList<Juez> juezList = new ArrayList<>();
@@ -67,6 +77,13 @@ public class JuezServices  extends Service{
         return juezList;
     }
     
+    /**
+     *
+     * @param id
+     * @return retorna un juez en especifico
+     * @throws SQLException
+     * @throws IOException
+     */
     public Juez get(int id) throws SQLException, IOException{
   
        Juez jue= null;
@@ -103,6 +120,13 @@ public class JuezServices  extends Service{
         
         return jue;
     }
+
+    /**
+     *  Crea un juez en la base de datos 
+     * @param juz
+     * @throws IOException
+     * @throws SQLException
+     */
     public void create(Juez juz) throws IOException, SQLException{
     
         cs = getConnection().prepareCall("Call create_persona(?,?,?,?,?,?)");
@@ -131,6 +155,12 @@ public class JuezServices  extends Service{
     
     }
     
+    /**
+     * Actualiza un juez en la base de datos
+     * @param juez
+     * @throws SQLException
+     * @throws IOException
+     */
     public void update(Juez juez) throws SQLException, IOException {
         con = getConnection();
         
@@ -160,6 +190,12 @@ public class JuezServices  extends Service{
                          
     }
     
+    /**
+     *  Borra un Juez en la base de datos
+     * @param idPersona
+     * @throws SQLException
+     * @throws IOException
+     */
     public void delete(int idPersona) throws SQLException, IOException{
       
        cs = getConnection().prepareCall("Call delete_juez(?)");
@@ -177,6 +213,13 @@ public class JuezServices  extends Service{
               
     }
     
+    /**
+     *
+     * @param userName
+     * @return Retorna la sala en base al nombre del usuario
+     * @throws SQLException
+     * @throws IOException
+     */
     public Sala getSalaByUserName(String userName) throws SQLException, IOException
     {
         con = getConnection();
@@ -194,7 +237,14 @@ public class JuezServices  extends Service{
         return salaJuez;
         
     }    
-     public int getRandomJuez() throws IOException, SQLException{
+
+    /**
+     *
+     * @return Retorna el id de un juez al azar
+     * @throws IOException
+     * @throws SQLException
+     */
+    public int getRandomJuez() throws IOException, SQLException{
         ArrayList<Integer> listId = new ArrayList<>();
         Random random = new Random();
     con = getConnection();

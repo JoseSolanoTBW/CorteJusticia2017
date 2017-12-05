@@ -15,11 +15,21 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author mean
+ */
 public class CasosService extends Service{
     private CallableStatement cs;
     private ResultSet rs;
     
-
+    /**
+     *
+     * @param id
+     * @return Retorna todos los casos que ha creado ese querellante
+     * @throws IOException
+     * @throws SQLException
+     */
     public ArrayList<Caso> getCasosPorQuerellante(int id) throws IOException, SQLException {
         
         ArrayList<Caso> querellanteList = new ArrayList<>();
@@ -42,6 +52,13 @@ public class CasosService extends Service{
         return querellanteList;
     }
     
+    /**
+     *
+     * @param id
+     * @return Retorna todos los casos que ha creado ese Juez
+     * @throws IOException
+     * @throws SQLException
+     */
     public ArrayList<Caso> getCasosPorJuez(int id) throws IOException, SQLException {
         con = getConnection();
         ArrayList<Caso> querellanteList = new ArrayList<>();
@@ -64,7 +81,14 @@ public class CasosService extends Service{
 
         return querellanteList;
     }
-       public ArrayList<Caso> getCasosNull() throws IOException, SQLException {
+
+    /**
+     *
+     * @return Consigue todos los casos que estan en null
+     * @throws IOException
+     * @throws SQLException
+     */
+    public ArrayList<Caso> getCasosNull() throws IOException, SQLException {
          con = getConnection();
          ArrayList<Caso> listaCasos = new ArrayList<>();
          Caso nCaso;
@@ -93,7 +117,12 @@ public class CasosService extends Service{
  
      }
      
-     
+    /**
+     *  Crea un caso
+     * @param cas
+     * @throws SQLException
+     * @throws IOException
+     */
     public void create(Caso cas) throws SQLException, IOException {
         con = getConnection();
         cs = con.prepareCall("Call create_caso(?,?,?,?,?)");
@@ -108,7 +137,14 @@ public class CasosService extends Service{
         con.close();
     }
       
-     public void actualizarEstado(int idCaso, int nuevoEstado) throws SQLException, IOException
+    /**
+     *  Actualiza un estado de un caso
+     * @param idCaso
+     * @param nuevoEstado
+     * @throws SQLException
+     * @throws IOException
+     */
+    public void actualizarEstado(int idCaso, int nuevoEstado) throws SQLException, IOException
      {
         con = getConnection();
         cs = con.prepareCall("Call update_estado_caso(?,?)");
@@ -119,7 +155,14 @@ public class CasosService extends Service{
         con.close();
      } 
     
-     public void insertarResolucionCasoEstado(int idCaso, String text ) throws SQLException, IOException
+    /**
+     *  Inserta una resolucion al estado del caso
+     * @param idCaso
+     * @param text
+     * @throws SQLException
+     * @throws IOException
+     */
+    public void insertarResolucionCasoEstado(int idCaso, String text ) throws SQLException, IOException
      {
         con = getConnection();
         cs = con.prepareCall("Call insertResolutionCaso(?,?)");
@@ -130,6 +173,13 @@ public class CasosService extends Service{
         con.close();
      }
      
+    /**
+     *
+     * @param id
+     * @return consigue un caso en especifico
+     * @throws IOException
+     * @throws SQLException
+     */
     public Caso getCasos(int id) throws IOException, SQLException {
         con = getConnection();
         Caso casos;
@@ -150,7 +200,14 @@ public class CasosService extends Service{
         return casos;
     }
     
-        public void createHistorial(int idEstado, int idCaso) throws SQLException, IOException {
+    /**
+     * Agrega un registro del al historial de ese caso
+     * @param idEstado
+     * @param idCaso
+     * @throws SQLException
+     * @throws IOException
+     */
+    public void createHistorial(int idEstado, int idCaso) throws SQLException, IOException {
         con = getConnection();
         cs = con.prepareCall("Call create_detalle_caso(?,?,?)");
         java.sql.Date sqlDate = java.sql.Date.valueOf(LocalDate.now());
@@ -162,7 +219,14 @@ public class CasosService extends Service{
         con.close();
     }
         
-       public ArrayList<DetalleHistorial> getCasoId(int idCaso) throws IOException, SQLException {
+    /**
+     *
+     * @param idCaso
+     * @return obtiene los historiales por el id del caso
+     * @throws IOException
+     * @throws SQLException
+     */
+    public ArrayList<DetalleHistorial> getCasoId(int idCaso) throws IOException, SQLException {
          con = getConnection();
          ArrayList<DetalleHistorial> listaCasos = new ArrayList<>();
          DetalleHistorial nCaso;
