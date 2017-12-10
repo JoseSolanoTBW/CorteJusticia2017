@@ -142,7 +142,7 @@ public class JuezServices  extends Service{
         cs = getConnection().prepareCall("Call create_user(?,?)");
         cs.setEscapeProcessing(true);
         cs.setString(1, juz.getLoginUsuario().getNombreUsuario());
-        cs.setString(2,"123");
+        cs.setString(2,juz.getLoginUsuario().getPassword());
         cs.execute();
         
         cs = getConnection().prepareCall("Call create_juez(?,?)");

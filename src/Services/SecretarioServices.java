@@ -151,7 +151,7 @@ public  class SecretarioServices extends Service{
         cs = con.prepareCall("Call create_user(?,?)");
         cs.setEscapeProcessing(true);
         cs.setString(1, secre.getLoginUsuario().getNombreUsuario());
-        cs.setString(2,"123");
+        cs.setString(2,secre.getLoginUsuario().getPassword());
         cs.execute();    
         con.close();
     
